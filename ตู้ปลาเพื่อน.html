@@ -1,0 +1,237 @@
+  <!DOCTYPE html>
+  <html lang="th">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Smart Aquarium Pro (Landscape)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+      :root {
+        --primary-color: #ff4a26;
+        --bg-color: #010101;
+        --card-bg: #ffffff;
+        --success: #28a745;
+        --danger: #dc3545;
+      }
+
+      body { 
+        font-family: 'Kanit', sans-serif; 
+        background: linear-gradient(135deg, #e0f2fe 0%, #f0f4f8 100%);
+        margin: 0; padding: 0; color: #333; min-height: 100vh;
+      }
+
+      .header { 
+        background: linear-gradient(90deg, #a44f00, #f78843, #ffffff);
+        color: white; padding: 20px 30px; 
+        font-size: 26px; font-weight: 500; 
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        text-align: left; /* ปรับข้อความให้อยู่ชิดซ้ายตรงนี้ครับ */
+      }
+
+      .tab-container {
+        display: flex; justify-content: center; margin-top: 20px; margin-bottom: 20px;
+      }
+
+      .tab { 
+        display: flex; background: white; border-radius: 30px; 
+        padding: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        width: 100%; max-width: 400px;
+      }
+
+      .tab button { 
+        flex: 1; padding: 12px; border: none; background: none; 
+        font-size: 16px; cursor: pointer; border-radius: 25px;
+        transition: 0.3s; color: #777;
+      }
+
+      .tab button.active { 
+        background: var(--primary-color); color: white; font-weight: 500; 
+      }
+
+      /* Container กว้างขึ้นสำหรับแนวขวาง */
+      .container { 
+        padding: 10px 20px 40px; 
+        max-width: 1000px; 
+        margin: auto; 
+      }
+
+      /* จัดเรียง Card แบบแนวขวาง */
+      .dashboard-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 25px;
+        justify-content: center;
+        align-items: stretch;
+      }
+
+      .card { 
+        flex: 1;
+        min-width: 320px; 
+        background: var(--card-bg); padding: 25px; border-radius: 20px; 
+        box-shadow: 0 8px 24px rgba(149, 157, 165, 0.1); 
+        border: 1px solid rgba(255,255,255,0.8);
+      }
+
+      .status-title { 
+        font-size: 18px; color: #555; margin-bottom: 20px; 
+        display: flex; align-items: center; gap: 10px; text-transform: uppercase; letter-spacing: 1px;
+        border-bottom: 2px solid #f0f4f8; padding-bottom: 10px;
+      }
+
+      .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+      
+      .status-item { 
+        background: #f8fafc; padding: 20px 15px; border-radius: 15px; 
+        text-align: center; border: 1px solid #edf2f7;
+      }
+      .status-val { display: block; font-size: 20px; font-weight: 500; margin-top: 8px; }
+      .on-text { color: var(--success); }
+      .off-text { color: var(--danger); }
+
+      .control-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+      
+      .btn { 
+        border: none; padding: 18px 10px; border-radius: 12px; color: white; 
+        font-size: 15px; font-weight: 500; cursor: pointer; transition: 0.2s;
+        display: flex; flex-direction: column; align-items: center; gap: 8px;
+      }
+      .btn i { font-size: 22px; }
+      .btn:hover { filter: brightness(1.1); }
+      .btn:active { transform: scale(0.95); opacity: 0.9; }
+      
+      .btn-light { background: #6366f1; }
+      .btn-oxy { background: #06b6d4; }
+      .btn-off { background: #94a3b8; color: #fff; }
+      .btn-feed { 
+        background: linear-gradient(45deg, #f59e0b, #ef4444); 
+        grid-column: span 2; margin-top: 5px; flex-direction: row; justify-content: center;
+        padding: 15px; font-size: 16px;
+      }
+
+      .input-group { margin-bottom: 20px; text-align: left; }
+      .input-group label { display: block; margin-bottom: 8px; font-size: 15px; color: #555; }
+      input[type="time"] { 
+        width: 100%; padding: 14px; border: 2px solid #edf2f7; 
+        border-radius: 12px; font-family: inherit; font-size: 16px; outline: none; box-sizing: border-box;
+      }
+      input[type="time"]:focus { border-color: var(--primary-color); }
+      
+      .btn-save { 
+        background: var(--primary-color); width: 100%; padding: 16px; 
+        border-radius: 12px; color: white; font-size: 16px; font-weight: bold; border: none; cursor: pointer;
+        transition: 0.2s;
+      }
+      .btn-save:active { transform: scale(0.98); }
+
+      .fade-in { animation: fadeIn 0.4s ease-in; }
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+  <img src="https://i.ibb.co/8g1GJkY/aquarium-logo.png" style="height:40px; vertical-align:middle;">
+  ตู้ปลาอัตโนมัติ
+</div>
+
+    <div class="tab-container">
+      <div class="tab">
+        <button id="btn-status" class="tablinks active" onclick="openTab(event, 'Status')"><i class="fas fa-chart-line"></i> แดชบอร์ด</button>
+        <button id="btn-settings" class="tablinks" onclick="openTab(event, 'Settings')"><i class="fas fa-cog"></i> ตั้งค่า</button>
+      </div>
+    </div>
+
+    <div id="Status" class="tabcontent fade-in">
+      <div class="container dashboard-row">
+        <div class="card">
+          <div class="status-title"><i class="fas fa-microchip"></i> สถานะปัจจุบัน</div>
+          <div class="status-grid">
+            <div class="status-item">
+              <span style="font-size: 14px; color: #777;">ไฟส่องสว่าง</span>
+              <span id="s-light" class="status-val">...</span>
+            </div>
+            <div class="status-item">
+              <span style="font-size: 14px; color: #777;">ออกซิเจน</span>
+              <span id="s-oxy" class="status-val">...</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="status-title"><i class="fas fa-gamepad"></i> แผงควบคุม</div>
+          <div class="control-grid">
+            <button class="btn btn-light" onclick="toggle('light', 'on')"><i class="fas fa-lightbulb"></i>เปิดไฟ</button>
+            <button class="btn btn-off" onclick="toggle('light', 'off')"><i class="fas fa-power-off"></i>ปิดไฟ</button>
+            <button class="btn btn-oxy" onclick="toggle('oxygen', 'on')"><i class="fas fa-wind"></i>เปิดอ๊อก</button>
+            <button class="btn btn-off" onclick="toggle('oxygen', 'off')"><i class="fas fa-power-off"></i>ปิดอ๊อก</button>
+            <button class="btn btn-feed" onclick="feed()"><i class="fas fa-utensils"></i> ให้อาหารทันที</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="Settings" class="tabcontent fade-in" style="display:none;">
+      <div class="container dashboard-row">
+        <div class="card" style="max-width: 500px; margin: 0 auto;">
+          <div class="status-title"><i class="fas fa-clock"></i> ตั้งเวลาทำงานอัตโนมัติ</div>
+          <form id="timerForm" onsubmit="saveSettings(event)">
+            <div class="input-group">
+              <label><i class="fas fa-sun" style="color:#f59e0b;"></i> เวลาเปิดไฟ:</label>
+              <input type="time" name="lightOn" value="V_LON">
+            </div>
+            <div class="input-group">
+              <label><i class="fas fa-moon" style="color:#6366f1;"></i> เวลาปิดไฟ:</label>
+              <input type="time" name="lightOff" value="V_LOFF">
+            </div>
+            <div class="input-group">
+              <label><i class="fas fa-cookie-bite" style="color:#d97706;"></i> เวลาให้อาหาร:</label>
+              <input type="time" name="feedTime" value="V_FD">
+            </div>
+            <button type="submit" class="btn-save"><i class="fas fa-save"></i> บันทึกการตั้งค่า</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) { tabcontent[i].style.display = "none"; }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) { tablinks[i].className = tablinks[i].className.replace(" active", ""); }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+      }
+
+      function toggle(device, state) {
+        fetch(`/toggle?device=${device}&state=${state}`).then(updateStatus);
+      }
+
+      function feed() {
+        if(confirm("ยืนยันการสั่งให้อาหารปลา?")) {
+          fetch(`/feed`).then(() => alert("ระบบกำลังให้อาหาร..."));
+        }
+      }
+
+      function saveSettings(e) {
+        e.preventDefault();
+        const params = new URLSearchParams(new FormData(document.getElementById('timerForm'))).toString();
+        fetch('/setTimer?' + params).then(res => res.text()).then(text => alert("บันทึกข้อมูลเรียบร้อย!"));
+      }
+
+      function updateStatus() {
+        fetch('/status').then(res => res.json()).then(data => {
+          const l = document.getElementById("s-light");
+          const o = document.getElementById("s-oxy");
+          
+          l.innerHTML = data.light ? '<span class="on-text"><i class="fas fa-circle"></i> เปิดอยู่</span>' : '<span class="off-text"><i class="far fa-circle"></i> ปิดอยู่</span>';
+          o.innerHTML = data.oxygen ? '<span class="on-text"><i class="fas fa-circle"></i> เปิดอยู่</span>' : '<span class="off-text"><i class="far fa-circle"></i> ปิดอยู่</span>';
+        }).catch(err => console.log("Waiting for ESP32..."));
+      }
+      
+      setInterval(updateStatus, 3000);
+      updateStatus();
+    </script>
+  </body>
+  </html>
